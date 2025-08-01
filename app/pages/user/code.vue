@@ -16,22 +16,26 @@ const email = reactive<Partial<Schema>>({
   email: '',
 });
 
+const alertBool = ref<boolean>();
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
     const res = await fetch(
-      'https://api.pancakepuncher.com/api/v1/user/register',
+      'https://api.pancakepuncher.com/api/v1/user/get_code',
       {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: event.data.email,
+          email: event.data.email,
         }),
       },
     );
 
-    const outcome = await res.json();
-    console.log(outcome);
+    if (!res.ok) {
+      alertBool.value = false;
+    }
+    alertBool.value = true;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log('Error:', error.message);
@@ -57,6 +61,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         class="w-63"
       />
     </UFormField>
+    <UAlert
+      v-if="alertBool === true"
+      title="Check your email!"
+      description="If the email exist then a code has been sent your email."
+    />
+    <UAlert
+      v-if="alertBool === false"
+      title="Error"
+      color="error"
+      description="Error with your request."
+    />
     <div class="flex flex-col gap-4 mt-4">
       <UButton type="submit" class="w-63 justify-center">Get Code</UButton>
       <UButton
