@@ -64,7 +64,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UAlert
       v-if="alertBool === true"
       title="Check your email!"
-      description="If the email exist then a code has been sent your email."
+      description="If the email exist then a code has been sent to your email."
     />
     <UAlert
       v-if="alertBool === false"
