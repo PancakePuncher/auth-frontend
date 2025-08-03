@@ -11,13 +11,14 @@ const showPassword = ref(false);
 
 const regSchema = z
   .object({
-    username: z
+    display_name: z
       .string()
       .min(1, 'Username is required')
       .max(
         maxUsernameLength,
         'Username Exceeds limit -- are you doing something nefarious?',
       ),
+    email: z.email('Invalid Email').min(1, 'Email is required'),
     password: z.string('Invalid Password').min(1, 'Password is required'),
     confirmPassword: z.string().min(1, 'Password is required'),
     setupCode: z.string().min(1, 'Secret is required'),
@@ -30,7 +31,8 @@ const regSchema = z
 type Schema = z.output<typeof regSchema>;
 
 const newUserInfo = reactive<Partial<Schema>>({
-  username: '',
+  display_name: '',
+  email: '',
   password: '',
   confirmPassword: '',
   setupCode: '',
@@ -45,15 +47,18 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: event.data.username,
+          display_name: event.data.display_name,
+          email: event.data.email,
           password: event.data.password,
           setupCode: event.data.setupCode,
         }),
       },
     );
 
-    const outcome = await res.json();
-    console.log(outcome);
+    if (!res.ok) {
+      return;
+    }
+    return;
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log('Error:', error.message);
@@ -73,7 +78,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   >
     <UFormField name="username" size="xl" required>
       <UInput
-        v-model="newUserInfo.username"
+        v-model="newUserInfo.email"
+        trailing-icon="i-lucide-at-sign"
+        placeholder="Email"
+        class="w-63"
+      />
+    </UFormField>
+    <UFormField name="username" size="xl" required>
+      <UInput
+        v-model="newUserInfo.display_name"
         placeholder="Username"
         :maxlength="maxUsernameLength"
         aria-describedby="character-count"
@@ -87,7 +100,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             aria-live="polite"
             role="status"
           >
-            {{ newUserInfo.username?.length }}/{{ maxUsernameLength }}
+            {{ newUserInfo.display_name?.length }}/{{ maxUsernameLength }}
           </div>
         </template></UInput
       >
