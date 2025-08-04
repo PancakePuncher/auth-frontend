@@ -81,6 +81,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         class="w-63 justify-center"
         >Register</UButton
       >
+      <UButton
+        to="/user/login"
+        color="primary"
+        variant="subtle"
+        class="w-63 justify-center"
+        >login</UButton
+      >
     </div>
   </UForm>
 </template>
