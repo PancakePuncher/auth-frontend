@@ -8,6 +8,7 @@ definePageMeta({
 
 const maxUsernameLength = 18;
 const showPassword = ref(false);
+const alertBool = ref();
 
 const regSchema = z
   .object({
@@ -56,7 +57,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     );
 
     if (!res.ok) {
-      return;
+      alertBool.value = false;
     }
     return;
   } catch (error: unknown) {
@@ -153,6 +154,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         class="w-63"
       />
     </UFormField>
+    <UAlert
+      v-if="alertBool === false"
+      title="Error"
+      color="error"
+      description="Error with your request."
+    />
     <div class="flex flex-col gap-4 mt-4">
       <UButton type="submit" class="w-63 justify-center">Register</UButton>
       <UButton
