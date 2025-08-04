@@ -59,7 +59,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     if (!res.ok) {
       alertBool.value = false;
     }
-    return;
+    await navigateTo('/user/login');
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log('Error:', error.message);
