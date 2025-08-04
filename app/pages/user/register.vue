@@ -77,7 +77,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     class="flex flex-col items-center min-w-sm min-h-1/2 justify-center space-y-4"
     @submit="onSubmit"
   >
-    <UFormField name="username" size="xl" required>
+    <UFormField name="email" size="xl" required>
       <UInput
         v-model="newUserInfo.email"
         trailing-icon="i-lucide-at-sign"
