@@ -7,36 +7,38 @@ definePageMeta({
 });
 
 const showPassword = ref(false);
+const alertBool = ref();
 
 const userSchema = z.object({
-  username: z.string().min(1, 'Invalid input'),
-  password: z.string().min(1, 'Invalid input'),
+  email: z.email(),
+  password: z.string().min(1, 'Password is required'),
 });
 
 type Schema = z.output<typeof userSchema>;
 
 const userInfo = reactive<Partial<Schema>>({
-  username: '',
+  email: '',
   password: '',
 });
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   try {
     const res = await fetch(
-      'https://api.pancakepuncher.com/api/v1/user/register',
+      'https://api.pancakepuncher.com/api/v1/user/login',
       {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: event.data.username,
+          email: event.data.email,
           password: event.data.password,
         }),
       },
     );
-
-    const outcome = await res.json();
-    console.log(outcome);
+    if (!res.ok) {
+      alertBool.value = false;
+    }
+    await navigateTo('/');
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.log('Error:', error.message);
@@ -54,13 +56,13 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     class="flex flex-col items-center min-w-sm min-h-1/2 justify-center space-y-4"
     @submit="onSubmit"
   >
-    <UFormField
-      name="username"
-      size="xl"
-      class="flex flex-row justify-center w-full"
-      required
-    >
-      <UInput v-model="userInfo.username" placeholder="Username" class="w-63" />
+    <UFormField name="email" size="xl" required>
+      <UInput
+        v-model="userInfo.email"
+        trailing-icon="i-lucide-at-sign"
+        placeholder="Email"
+        class="w-63"
+      />
     </UFormField>
     <UFormField name="password" size="xl" required>
       <UInput
@@ -82,6 +84,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             @click="showPassword = !showPassword" /></template
       ></UInput>
     </UFormField>
+    <UAlert
+      v-if="alertBool === false"
+      title="Error"
+      color="error"
+      description="Login failed"
+    />
     <div class="flex flex-col gap-4 mt-4">
       <UButton type="submit" class="w-63 justify-center">Login</UButton>
       <UButton
