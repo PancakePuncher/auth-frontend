@@ -30,6 +30,9 @@ importers:
         specifier: ^4.0.10
         version: 4.0.10
     devDependencies:
+      '@iconify-json/lucide':
+        specifier: ^1.2.60
+        version: 1.2.60
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -611,6 +614,9 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/lucide@1.2.60':
+    resolution: {integrity: sha512-iVhpjcJkrR65jaJCJAFr02FkL73Qth039MgDJOcuKYOl32183qgAeHmo44DI2SzkYURGpc0GMwnhRPpQPOaChg==}
 
   '@iconify/collections@1.0.570':
     resolution: {integrity: sha512-4KJOpoeShq/c7ZoY3fTBfamu6G5hpPMHH8Qf1OSArb3IY/cUy3iVxtLy1uhlpuvAguHxGNycbQwoSreHryIBGA==}
@@ -5600,6 +5606,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-json/lucide@1.2.60':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.570':
     dependencies:
